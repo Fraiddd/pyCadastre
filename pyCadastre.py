@@ -1,9 +1,15 @@
 # coding: utf-8
 
 import os
+import sys
 import requests
 import tarfile
 from tkinter import messagebox as mb
+from tkinter import Tk, PhotoImage, Text,\
+                    INSERT, END, FALSE, TOP,\
+                    Menu, SUNKEN, StringVar
+from tkinter.ttk import Frame, Entry, Label,\
+                        Combobox, Button, Style
 from urllib import request
 
 ##############################################################################
@@ -32,6 +38,32 @@ def download(url, fich):
     except:
         return False
 ##############################################################################
+def getString(appli, label):
+    def ok():
+        win.destroy()
+    def ext():
+        mb.showerror(title='Canceled', message='You lost your way ...')
+        sys.exit()
+    win = Tk()
+    st =  Style()
+    st.configure('frameStyle.TFrame', borderwidth=2, relief='solid')
+    text = StringVar()
+    win.title(appli)
+    win.geometry('250x120+820+270')
+    win.resizable(False, False)
+    Label(win, text = label).pack()
+    fram  = Frame(win, style='frameStyle.TFrame')
+    fram.pack(padx=10, pady=10)
+    Entry(fram, textvariable=text).pack()
+
+    ok_but = Button(win, text="Ok", command=ok)
+    ok_but.pack(pady=10)
+
+    win.bind('<Escape>', lambda e: ext())
+    win.protocol("WM_DELETE_WINDOW", ext)
+    win.mainloop()
+    return text.get()
+
 def getCadastre(insee):
     
     url = 'https://cadastre.data.gouv.fr/data/dgfip-pci-vecteur/latest/dxf/feuilles/'\
@@ -43,29 +75,35 @@ def getCadastre(insee):
     except:
         files = None
     if files:
-        if takachoice('Download Cadastre', 'Delete existing files?'):
+        if takachoice('pyCadastre', 'Effacer les fichiers existants?'):
             for fi in files:
-                os.remove(fi)
+                os.remove(path+fi)
         else:
+            mb.showerror(title='Abandon', message='Un cadastre est déjà present')
             os.sys.exit()
-    download(url, htm)
-    lbz2 = []
-    file = open(htm, 'r')
-    for l in file:
-        if '<a href="dxf-' in l:
-            lbz2.append(extract(l,'.tar.bz2">','</a>'))
-    file.close()
-    os.makedirs(path, exist_ok=True)
-    lf = []
-    for f in lbz2:
-        lf.append(path+f)
-        response = requests.get(url+'/'+f)
-        open(path+f, 'wb').write(response.content)
-       
-    for f in lf:
-        unzipbz2(f)
-        os.remove(f)
-    
-    os.remove(htm)
-
-getCadastre('05007')
+    if download(url, htm):
+        lbz2 = []
+        file = open(htm, 'r')
+        for l in file:
+            if '<a href="dxf-' in l:
+                lbz2.append(extract(l,'.tar.bz2">','</a>'))
+        file.close()
+        os.makedirs(path, exist_ok=True)
+        lf = []
+        for f in lbz2:
+            lf.append(path+f)
+            response = requests.get(url+'/'+f)
+            open(path+f, 'wb').write(response.content)
+        
+        for f in lf:
+            unzipbz2(f)
+            os.remove(f)
+        
+        os.remove(htm)
+    else:
+        mb.showerror(title='Abandon', message='Vérifiez le numéro INSEE')
+insee = ''
+insee = getString('pyCadastre', 'Numéro INSEE ex: 35288')
+while len(insee) != 5 or not insee.isdigit():
+    insee = getString('pyCadastre', '   Numéro INVALIDE\nNuméro INSEE ex: 35288')
+getCadastre(insee)

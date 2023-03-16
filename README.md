@@ -1,6 +1,6 @@
 # pyCadastre 1.0
 
-pyCadastre est un petit programme Python 3.11 qui extrait les feuilles cadastrales d'une commune.
+pyCadastre est un petit programme Python 3.11 qui extrait les feuilles cadastrales d'une commune Française.
 
 
 
@@ -10,7 +10,7 @@ pyCadastre est un petit programme Python 3.11 qui extrait les feuilles cadastral
 
 ## Exigences
 
-  Seulement pour Windows
+   - Seulement pour Windows
 
 
 ## Usage
@@ -26,4 +26,4 @@ pyCadastre est un petit programme Python 3.11 qui extrait les feuilles cadastral
 
 ## License
 
-  No license
+  - No license
