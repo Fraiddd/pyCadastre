@@ -5,11 +5,9 @@ import sys
 import requests
 import tarfile
 from tkinter import messagebox as mb
-from tkinter import Tk, PhotoImage, Text,\
-                    INSERT, END, FALSE, TOP,\
-                    Menu, SUNKEN, StringVar
+from tkinter import Tk, StringVar
 from tkinter.ttk import Frame, Entry, Label,\
-                        Combobox, Button, Style
+                        Button, Style
 from urllib import request
 
 ##############################################################################
