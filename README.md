@@ -1,6 +1,10 @@
+![](./img/illu.png)
+
+
 # pyCadastre 1.0
 
-pyCadastre est un petit programme Python 3.11 qui extrait les feuilles cadastrales d'une commune Française.
+pyCadastre est un petit programme Python 3.11 qui télécharge et 
+extrait les feuilles cadastrales d'une commune Française.
 
 
 
