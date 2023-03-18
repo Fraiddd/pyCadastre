@@ -140,7 +140,7 @@ def pyCadastre(insee):
             lf.append(path+f)
             response = requests.get(url + '/ '+ f)
             open(path + f, 'wb').write(response.content)
-        # Décompression des bz2.
+        # Décompression et suppression des bz2.
         for f in lf:
             unzipbz2(f)
             os.remove(f)
